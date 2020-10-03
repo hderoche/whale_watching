@@ -1,0 +1,20 @@
+{
+  "name": "whale_watching",
+  "version": "1.0.0",
+  "description": "Using the Whale_Alert API to track big transactions",
+  "main": "myApiKey.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zwakx/whale_watching.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zwakx/whale_watching/issues"
+  },
+  "homepage": "https://github.com/Zwakx/whale_watching#readme"
+}

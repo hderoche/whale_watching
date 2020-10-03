@@ -1,0 +1,32 @@
+
+<pre>
+    nb uniqueAddress = 
+    uniqueAddress= {{ uniqueAddress|json}}
+</pre>
+
+<div class="my-block" *ngIf="resTransactions">
+    <mat-card *ngFor="let t of resTransactions.transactions" class="my-transactions">
+        <mat-card-title>
+            {{t.amount_usd | currency}} ~ {{t.amount}} {{t.symbol}}
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{t.timestamp*1000 | date:'short'}}
+        </mat-card-subtitle>
+        <mat-card-content>
+            Blockchain : {{t.blockchain}}
+            <br>
+            FROM <samp class="address">{{t.from.address | slice:0:8}}</samp> TO <samp class="address">{{t.to.address | slice:0:8}}</samp>
+            <br>
+            FROM {{t.from.owner_type}} TO {{t.to.owner_type}}
+        </mat-card-content>
+    </mat-card>
+</div>
+
+
+<!--
+
+<pre>
+    {{transactions | json}}
+</pre>
+
+-->

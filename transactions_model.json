@@ -1,0 +1,25 @@
+{
+    "result": "success",
+    "cursor": "3bca07b6-3bca07b6-5f763e32",
+    "count": 100,
+    "transactions": [
+  {
+    "blockchain": "bitcoin",
+    "symbol": "btc",
+    "id": "1001779384",
+    "transaction_type": "transfer",
+    "hash": "62b33f3316e9ce83aa9d1be3781e8ab159483d01027a98e4d086dca70e62e3f7",
+    "from": {
+      "address": "bc1qc2lr4szkceulnx7dcxu5rc683a287ln7teazv8",
+      "owner_type": "unknown"
+    },
+    "to": {
+      "address": "3MFt4VB9U52M85FzowCPieZfC2aGnU9z3W",
+      "owner_type": "unknown"
+    },
+    "timestamp": 1601541534,
+    "amount": 53.407402,
+    "amount_usd": 583434.44,
+    "transaction_count": 1
+    }]
+}

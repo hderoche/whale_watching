@@ -1,0 +1,14 @@
+.my-transactions{
+    
+    width:50%; 
+    display: block;
+    margin: 0.5em auto;
+}
+
+.my-block{
+    align-items: center;
+    
+}
+.address{
+    color: red;
+}
