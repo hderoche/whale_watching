@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const https = require('https');
+const cron = require('node-cron');
+
 app.use(express.json);
 
 
@@ -15,20 +17,73 @@ mongoose.connect(`mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb
     console.error(error);
 })
 
-var cron = require('node-cron');
+const Transaction = require('./models/transaction');
+
+
+
+var dataRequest ='';
 cron.schedule('*/7 * * * * *', () =>{
-    const time = Math.floor(Date.now()/1000) - 7;
+    const time = Math.floor(Date.now()/1000) - 9000;
     console.log(time);
     
     https.get(`https://api.whale-alert.io/v1/transactions?api_key=3PDbyvfzkuFHP3BEyfuAhP2uiKJEE9aT&min_value=500000&start=${time}&cursor=2bc7e46-2bc7e46-5c66c0a7`, (res) => {
         console.log(res.statusMessage)
         res.setEncoding('utf-8');
         res.on('data', (d) =>{
-            console.log(d);
+            dataRequest += d;
+        });
+        res.on('end', () =>{
+            console.log(dataRequest);
+            dataRequest = JSON.parse(dataRequest);
+            console.log(dataRequest.count);
+            convertToObject(dataRequest);
+            dataRequest='';
         });
         
     }).on('error', (e)=>{
         console.log('Error on Https request')
-    });
+    })
+    
 });
+
+convertToObject = (data) =>{
+    if (data.count === 0) return;
+    data.transactions.forEach( (t) => {
+        // for the Transaction object I decided to go with strings of strings
+        // seems to be the easiest way, might change later
+        const transaction = new Transaction({
+            blockchain: t.blockchain,
+            symbol: t.symbol,
+            transaction_type: t.transaction_type,
+            hash: t.hash,
+            from: { 
+                address: t.from.address,
+                owner_type : t.from.owner_type
+            },
+            to: { 
+                address: t.to.address,
+                owner_type : t.to.owner_type
+            },
+            timestamp: t.timestamp,
+            amount: t.amount,
+            amount_usd: t.amount_usd,
+            transaction_count: t.transaction_count
+        });
+        transaction.sa
+        if (!Transaction.findOne({timestamp: transaction.timestamp})){
+            transaction.save().then(()=>{
+                console.log(`Successfully created the transaction : ${transaction.hash}`);
+            }).catch((error)=>{
+                // returning the error message if the creation of the user is not possible
+                console.log({message: error.message});
+            });
+        }
+    });
+}
+
+
+
+// Fonction pour save les json dans la base de données MongoDB
+// Fonction pour traiter les données, whale_watching
+
 app.listen(3000);
