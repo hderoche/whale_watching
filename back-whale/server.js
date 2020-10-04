@@ -17,14 +17,18 @@ mongoose.connect(`mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb
 
 var cron = require('node-cron');
 cron.schedule('*/7 * * * * *', () =>{
-    const time = Date.now() - 3601*24*1000;
-    const timeEnd = Date.now() - 3601*23*1000;
-    
+    const time = Math.floor(Date.now()/1000) - 7;
     console.log(time);
-    console.log(timeEnd);
+    
     https.get(`https://api.whale-alert.io/v1/transactions?api_key=3PDbyvfzkuFHP3BEyfuAhP2uiKJEE9aT&min_value=500000&start=${time}&cursor=2bc7e46-2bc7e46-5c66c0a7`, (res) => {
-        console.log(res.statusCode)
-        console.log(res)
+        console.log(res.statusMessage)
+        res.setEncoding('utf-8');
+        res.on('data', (d) =>{
+            console.log(d);
+        });
+        
+    }).on('error', (e)=>{
+        console.log('Error on Https request')
     });
 });
 app.listen(3000);
