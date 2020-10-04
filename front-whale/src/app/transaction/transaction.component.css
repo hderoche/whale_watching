@@ -1,6 +1,6 @@
 .my-transactions{
     
-    width:50%; 
+    width:80%; 
     display: block;
     margin: 0.5em auto;
 }
@@ -12,3 +12,14 @@
 .address{
     color: red;
 }
+
+.expansion-panel {
+    width: 50%;
+    margin: 0.5em auto;
+}
+
+.tr_logo {
+    height: 40px;
+    width: 40px;
+}
+

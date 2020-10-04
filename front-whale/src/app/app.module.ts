@@ -12,13 +12,16 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTableModule} from '@angular/material/table';
 import {MatListModule} from '@angular/material/list';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import { NavbarComponent } from './navbar/navbar.component'; 
-
+import { NavbarComponent } from './navbar/navbar.component';
+import {MatIconModule} from '@angular/material/icon';
+import { WalletComponent } from './wallet/wallet.component';
+import {MatExpansionModule} from '@angular/material/expansion'; 
 @NgModule({
   declarations: [
     AppComponent,
     TransactionComponent,
-    NavbarComponent
+    NavbarComponent,
+    WalletComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatListModule,
     MatButtonModule,
     HttpClientModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

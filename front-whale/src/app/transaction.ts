@@ -1,6 +1,6 @@
 //// Interface
 
-import { IfStmt } from '@angular/compiler';
+
 
 export interface TransactionRecord {
     blockchain: string;
@@ -32,6 +32,10 @@ export interface WalletRecord {
     owner_type: string;
 }
 
+export interface WalletTransactionRecord {
+    wallet: Wallet;
+    transactions: Array<Transaction>;
+}
 
 //// Classes
 
@@ -54,7 +58,7 @@ export class ResponseTransactions implements ResponseTransactionsRecord {
     transactions: Transaction[] = null;
 
     // tslint:disable-next-line: variable-name
-    _unique_address: string[];
+    _unique_address: Wallet[];
     constructor(input: any = {}) {
         // Prends les attributs de la classe et les map avec les champs du Json correspondant
         Object.keys(this).forEach(p => this[p] = (input as any)[p]);
@@ -66,18 +70,33 @@ export class ResponseTransactions implements ResponseTransactionsRecord {
         }
     }
 
-    occurenceTransactions(): string[] {
+    occurenceTransactions(): Wallet[] {
         this._unique_address = [];
-        this.transactions?.forEach((t) => {
-            if (!this._unique_address.includes(t.to.address)) {
-                this._unique_address.push(t.to.address);
+        this.transactions.forEach((t) => {
+            if (!(this._unique_address.includes(t.to))){
+                this._unique_address.push(t.to);
             }
-            if (!this._unique_address.includes(t.from.address)) {
-                this._unique_address.push(t.from.address);
+            if (!(this._unique_address.includes(t.from))){
+                this._unique_address.push(t.from);
             }
         });
-        console.log(this._unique_address);
         return this._unique_address;
+    }
+
+    allTransactionByWallet(wallet: Wallet): Transaction[] {
+        const tr: Transaction[] = [];
+        this.transactions.forEach((t) => {
+            if (t.from.address === wallet.address || t.to.address === wallet.address) {
+                tr.push(t);
+            }
+        });
+        return tr;
+    }
+
+    imgPathSetup(): void {
+        this.transactions.forEach((t) =>{
+            t.pathImg = '../../assets/' + t.blockchain + '.svg';
+        });
     }
 }
 
@@ -95,9 +114,25 @@ export class Transaction implements TransactionRecord {
     amount_usd: number = null;
     transactionCount: number = null;
 
+    pathImg: string;
+
     constructor(input: any = {}) {
         Object.keys(this).forEach(p => this[p] = (input as any)[p]);
         this.from = new Wallet(input.from);
         this.to = new Wallet(input.to);
+    }
+}
+
+export class WalletTransaction implements WalletTransactionRecord{
+    wallet: Wallet = null;
+    transactions: Transaction[] = null;
+
+    constructor(input: any = {}) {
+        Object.keys(this).forEach(p => this[p] = (input as any)[p]);
+        this.wallet = new Wallet(input.wallet);
+        this.transactions = [];
+        if (toString.call(input.transactions) === '[object Array]' && input.transactions.length > 0) {
+            input.transactions.forEach((e: TransactionRecord) => this.transactions.push(new Transaction(e)));
+        }
     }
 }
