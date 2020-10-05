@@ -18,12 +18,13 @@ mongoose.connect(`mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb
 })
 
 const Transaction = require('./models/transaction');
+const { db } = require('./models/transaction');
 
 
 
 var dataRequest ='';
 cron.schedule('*/7 * * * * *', () =>{
-    const time = Math.floor(Date.now()/1000) - 9000;
+    const time = Math.floor(Date.now()/1000) - 10;
     console.log(time);
     
     https.get(`https://api.whale-alert.io/v1/transactions?api_key=3PDbyvfzkuFHP3BEyfuAhP2uiKJEE9aT&min_value=500000&start=${time}&cursor=2bc7e46-2bc7e46-5c66c0a7`, (res) => {
@@ -33,7 +34,6 @@ cron.schedule('*/7 * * * * *', () =>{
             dataRequest += d;
         });
         res.on('end', () =>{
-            console.log(dataRequest);
             dataRequest = JSON.parse(dataRequest);
             console.log(dataRequest.count);
             convertToObject(dataRequest);
@@ -48,7 +48,8 @@ cron.schedule('*/7 * * * * *', () =>{
 
 convertToObject = (data) =>{
     if (data.count === 0) return;
-    data.transactions.forEach( (t) => {
+    data.transactions.forEach(
+        (t) => {
         // for the Transaction object I decided to go with strings of strings
         // seems to be the easiest way, might change later
         const transaction = new Transaction({
@@ -69,15 +70,18 @@ convertToObject = (data) =>{
             amount_usd: t.amount_usd,
             transaction_count: t.transaction_count
         });
-        transaction.sa
-        if (!Transaction.findOne({timestamp: transaction.timestamp})){
-            transaction.save().then(()=>{
-                console.log(`Successfully created the transaction : ${transaction.hash}`);
-            }).catch((error)=>{
-                // returning the error message if the creation of the user is not possible
+        Transaction.findOne({timestamp: transaction.timestamp}).then(
+            (db_transaction) =>{
+                if (db_transaction === null){
+                    transaction.save().then(() =>{
+                        console.log('Successfully added to the database');
+                    }).catch((error) => {
+                        console.log({message: error.message});
+                    })
+                };
+            }).catch( (error) =>{
                 console.log({message: error.message});
-            });
-        }
+            })
     });
 }
 
