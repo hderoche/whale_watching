@@ -23,7 +23,7 @@ const { db } = require('./models/transaction');
 
 
 var dataRequest ='';
-cron.schedule('*/7 * * * * *', () =>{
+cron.schedule('*/10 * * * * *', () =>{
     const time = Math.floor(Date.now()/1000) - 10;
     console.log(time);
     
