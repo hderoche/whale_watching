@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const https = require('https');
 const cron = require('node-cron');
 
+const transactionRouter = require('./routes/transactions');
 app.use(express.json);
+
 
 
 
@@ -18,7 +20,7 @@ mongoose.connect(`mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb
 })
 
 const Transaction = require('./models/transaction');
-const { db } = require('./models/transaction');
+
 
 
 
@@ -85,8 +87,25 @@ convertToObject = (data) =>{
     });
 }
 
+app.get('/', (req, res) => {
+    console.log(req.body.hash);
+    Transaction.find().limit(10).then( (transactions) => {
+        res.status(200).json(transactions);
+    }).catch( (error) => {
+        res.status(400).json({error: 'Cannot retrieve all transactions'});
+    });
+});
 
-
+app.post('/hash', (req, res) => {
+    Transaction.findOne({hash: req.body.hash}).then((transaction) => {
+        res.status(200).json(transaction);
+    }).catch((error) => {
+        res.status(404).json({
+            error: error.message
+        });
+    });
+});
+app.use('/api', transactionRouter);
 // Fonction pour save les json dans la base de données MongoDB
 // Fonction pour traiter les données, whale_watching
 

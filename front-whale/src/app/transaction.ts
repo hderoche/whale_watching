@@ -94,7 +94,7 @@ export class ResponseTransactions implements ResponseTransactionsRecord {
     }
 
     imgPathSetup(): void {
-        this.transactions.forEach((t) =>{
+        this.transactions.forEach((t) => {
             t.pathImg = '../../assets/' + t.blockchain + '.svg';
         });
     }

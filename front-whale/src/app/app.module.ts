@@ -15,13 +15,20 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { NavbarComponent } from './navbar/navbar.component';
 import {MatIconModule} from '@angular/material/icon';
 import { WalletComponent } from './wallet/wallet.component';
-import {MatExpansionModule} from '@angular/material/expansion'; 
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
+import { TrackWalletComponent } from './track-wallet/track-wallet.component';
+import { HeroBannerComponent } from './hero-banner/hero-banner.component';
+import { FooterComponent } from './footer/footer.component';
 @NgModule({
   declarations: [
     AppComponent,
     TransactionComponent,
     NavbarComponent,
-    WalletComponent
+    WalletComponent,
+    TrackWalletComponent,
+    HeroBannerComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +41,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     HttpClientModule,
     MatToolbarModule,
     MatIconModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
