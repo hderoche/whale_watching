@@ -1,0 +1,13 @@
+.main-footer{
+    height: 3rem;
+    width: 100%;
+    display: inline-flex;
+    margin: 0 auto;
+    background-color: darkslategray;
+}
+.element-footer{
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    margin: auto;
+}

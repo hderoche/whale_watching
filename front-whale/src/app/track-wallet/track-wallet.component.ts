@@ -1,21 +1,20 @@
 import { RestService } from './../rest.service';
-import { ResponseTransactions, Wallet, WalletTransaction } from './../transaction';
 import { Component, OnInit } from '@angular/core';
-import { DataSource } from '@angular/cdk/table';
-
+import { ResponseTransactions, Wallet, WalletTransaction } from '../transaction';
 
 @Component({
-  selector: 'app-transaction',
-  templateUrl: 'transaction.component.html',
-  styleUrls: ['./transaction.component.css']
+  selector: 'app-track-wallet',
+  templateUrl: './track-wallet.component.html',
+  styleUrls: ['./track-wallet.component.css']
 })
-export class TransactionComponent implements OnInit {
+export class TrackWalletComponent implements OnInit {
 
   public resTransactions: ResponseTransactions;
   public uniqueAddress: Wallet[];
   public transactionByWallet: WalletTransaction[] = [];
-  displayedColumns: string[] = ['blockchain', 'date', 'from', 'to', 'amount', 'usd'];
-  constructor(public rest: RestService) { }
+  displayedColumns2: string[] = ['wallet', 'date', 'from', 'to'];
+
+  constructor(private rest: RestService) { }
 
   ngOnInit(): void {
     this.rest.getTransactions$().subscribe((res) => {
@@ -34,9 +33,4 @@ export class TransactionComponent implements OnInit {
       this.transactionByWallet.push(new WalletTransaction({wallet: w, transactions: this.resTransactions.allTransactionByWallet(w)}));
     });
   }
-
-  // Stats (number of coins exchanged in total)
-  //
-
-
 }
