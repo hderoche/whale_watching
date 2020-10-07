@@ -4,7 +4,9 @@
   "description": "Using the Whale_Alert API to track big transactions",
   "main": "myApiKey.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devStart": "nodemon server.js",
+    "start": "forever start server.js"
   },
   "repository": {
     "type": "git",

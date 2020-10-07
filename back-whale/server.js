@@ -17,6 +17,8 @@ mongoose.connect(`mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb
     console.error(error);
 })
 
+
+
 const Transaction = require('./models/transaction');
 const { db } = require('./models/transaction');
 
