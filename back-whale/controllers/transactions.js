@@ -1,7 +1,8 @@
+const listsAddresses = require('../models/lists-addresses');
 const Transaction = require('../models/transaction');
 
 exports.getTransactions = (req, res) => {
-    Transaction.find().limit(10).then( (transactions) => {
+    Transaction.find().sort({timestamp: -1}).limit(10).then( (transactions) => {
         res.status(200).json(transactions);
     }).catch( (error) => {
         res.status(400).json({error: 'Cannot retrieve all transactions'});
@@ -19,9 +20,24 @@ exports.getTransactionsByWallet = (req,res) => {
 };
 
 exports.getTransactionByHash = (req, res) => {
-    Transaction.findOne({hash: req.body.hash}).then( (transaction) => {
+    Transaction.findOne({hash: req.params.hash}).then( (transaction) => {
         res.status(200).json(transaction);
     }).catch((error) =>{
         res.status(404).json({error: error.message});
     })
+};
+
+exports.getBuyersAddress = (req, res) => {
+    listsAddresses.find({title: "Buyers"}).then( (list) => {
+        res.status(200).json(list);
+    }).catch((err) => {
+        res.status(404).send({error : err});
+    });
+};
+exports.getSellersAddress = (req, res) => {
+    listsAddresses.find({title: "Sellers"}).then( (list) => {
+        res.status(200).json(list);
+    }).catch((err) => {
+        res.status(404).send({error : err});
+    });
 };

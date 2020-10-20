@@ -1,12 +1,12 @@
-const express = require('express');
-const app = express();
+
 const mongoose = require('mongoose');
-const https = require('https');
-const cron = require('node-cron');
+const http = require('http');
+const app = require('./app');
+// Not using fork at the moment
+const fork = require('child_process').fork
+const whale = require('./logic/whaleApi');
 
 const transactionRouter = require('./routes/transactions');
-app.use(express.json);
-
 
 
 
@@ -19,96 +19,58 @@ mongoose.connect(`mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb
     console.error(error);
 })
 
+const normalizePort = val => {
+    const port = parseInt(val, 10);
+  
+    if (isNaN(port)) {
+      return val;
+    }
+    if (port >= 0) {
+      return port;
+    }
+    return false;
+  };
+  const port = normalizePort(process.env.PORT || '4000');
+  app.set('port', port);
+  
+  const errorHandler = error => {
+    if (error.syscall !== 'listen') {
+      throw error;
+    }
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+    switch (error.code) {
+      case 'EACCES':
+        console.error(bind + ' requires elevated privileges.');
+        process.exit(1);
+        break;
+      case 'EADDRINUSE':
+        console.error(bind + ' is already in use.');
+        process.exit(1);
+        break;
+      default:
+        throw error;
+    }
+  };
+  
+  const server = http.createServer(app);
+  
+  server.on('error', errorHandler);
+  server.on('listening', () => {
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+    console.log('Listening on ' + bind);
+  });
 
 
-const Transaction = require('./models/transaction');
+//Function to call the whale alert Api periodically
+//whale.cronFunc()
 
 
 
-
-var dataRequest ='';
-cron.schedule('*/10 * * * * *', () =>{
-    const time = Math.floor(Date.now()/1000) - 10;
-    console.log(time);
-    
-    https.get(`https://api.whale-alert.io/v1/transactions?api_key=3PDbyvfzkuFHP3BEyfuAhP2uiKJEE9aT&min_value=500000&start=${time}&cursor=2bc7e46-2bc7e46-5c66c0a7`, (res) => {
-        console.log(res.statusMessage)
-        res.setEncoding('utf-8');
-        res.on('data', (d) =>{
-            dataRequest += d;
-        });
-        res.on('end', () =>{
-            dataRequest = JSON.parse(dataRequest);
-            console.log(dataRequest.count);
-            convertToObject(dataRequest);
-            dataRequest='';
-        });
-        
-    }).on('error', (e)=>{
-        console.log('Error on Https request')
-    })
-    
-});
-
-convertToObject = (data) =>{
-    if (data.count === 0) return;
-    data.transactions.forEach(
-        (t) => {
-        // for the Transaction object I decided to go with strings of strings
-        // seems to be the easiest way, might change later
-        const transaction = new Transaction({
-            blockchain: t.blockchain,
-            symbol: t.symbol,
-            transaction_type: t.transaction_type,
-            hash: t.hash,
-            from: { 
-                address: t.from.address,
-                owner_type : t.from.owner_type
-            },
-            to: { 
-                address: t.to.address,
-                owner_type : t.to.owner_type
-            },
-            timestamp: t.timestamp,
-            amount: t.amount,
-            amount_usd: t.amount_usd,
-            transaction_count: t.transaction_count
-        });
-        Transaction.findOne({timestamp: transaction.timestamp}).then(
-            (db_transaction) =>{
-                if (db_transaction === null){
-                    transaction.save().then(() =>{
-                        console.log('Successfully added to the database');
-                    }).catch((error) => {
-                        console.log({message: error.message});
-                    })
-                };
-            }).catch( (error) =>{
-                console.log({message: error.message});
-            })
-    });
-}
-
-app.get('/', (req, res) => {
-    console.log(req.body.hash);
-    Transaction.find().limit(10).then( (transactions) => {
-        res.status(200).json(transactions);
-    }).catch( (error) => {
-        res.status(400).json({error: 'Cannot retrieve all transactions'});
-    });
-});
-
-app.post('/hash', (req, res) => {
-    Transaction.findOne({hash: req.body.hash}).then((transaction) => {
-        res.status(200).json(transaction);
-    }).catch((error) => {
-        res.status(404).json({
-            error: error.message
-        });
-    });
-});
 app.use('/api', transactionRouter);
 // Fonction pour save les json dans la base de données MongoDB
 // Fonction pour traiter les données, whale_watching
 
-app.listen(3000);
+
+server.listen(port);
