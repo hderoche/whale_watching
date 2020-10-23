@@ -1,4 +1,5 @@
 const listsAddresses = require('../models/lists-addresses');
+const Stats = require('../models/stats');
 const Transaction = require('../models/transaction');
 
 exports.getTransactions = (req, res) => {
@@ -41,3 +42,11 @@ exports.getSellersAddress = (req, res) => {
         res.status(404).send({error : err});
     });
 };
+
+exports.getStats = (req, res) => {
+    Stats.findOne().then((doc) =>{
+        res.status(200).json(doc);
+    }).catch((err) => {
+        res.status(404).send({error: err});
+    });
+}
