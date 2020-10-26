@@ -10,6 +10,14 @@ exports.getTransactions = (req, res) => {
     });
 };
 
+exports.getTransactionsById = (req, res) => {
+    Transaction.findById(req.params.id).then((transaction) =>{
+        res.status(200).json(transaction);
+    }).catch((err) => {
+        res.status(404).json({error: 'cannot find the transaction'});
+    })
+}
+
 exports.getTransactionsByWallet = (req,res) => {
     Transaction.find({from: {address: req.address}}).then( (transactions) => {
         res.status(200).json(transactions);
