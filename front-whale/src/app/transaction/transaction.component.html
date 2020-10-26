@@ -1,11 +1,11 @@
-<!--
-<pre>
-    uniqueAddress= {{ uniqueAddress|json}}
-</pre>
--->
 
-<div class="my-block" *ngIf="resTransactions">
-    <table mat-table [dataSource]="resTransactions.transactions" style="width: 80%; margin: auto">
+<!--<pre>
+    uniqueAddress= {{ ListTransactions|json}}
+</pre>-->
+<h1 style="text-align: center;">Last {{total}} Transactions over 500M</h1>
+
+<div class="my-block" *ngIf="LT">
+    <table mat-table [dataSource]="LT" style="width: 90%; margin: auto; overflow: scroll">
 
         <!--- Note that these columns can be defined in any order.
                 The actual rendered columns are set as a property on the row definition" -->
@@ -48,27 +48,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 </div>
-
-<!--
-    Will need to change to a table for better understanding and smaller size
--->
-
-<mat-expansion-panel class="expansion-panel">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Unique wallet over the last 100 transactions
-      </mat-panel-title>
-      <mat-panel-description>
-       All the transactions made by unique wallet
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="my-block" *ngIf="resTransactions">
-        
-        
-        
-    </div>
-    
-  </mat-expansion-panel>
 
 
 <!--

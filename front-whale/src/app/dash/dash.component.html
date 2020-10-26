@@ -1,0 +1,70 @@
+<div *ngIf="statistics">
+    <mat-grid-list cols="3" rowHeight="2:1">
+        <mat-grid-tile>
+            <mat-card>
+                <mat-card-title>Mean Transaction</mat-card-title>
+                <mat-card-content>
+                    {{statistics.mean | currency}}
+                </mat-card-content>
+    
+            </mat-card>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-card>
+                <mat-card-title>Min Transaction</mat-card-title>
+                <mat-card-content>
+                    <div class="container">
+                    
+                        <img [src]="minTransaction.pathImg" alt="" class="logo">
+                        <div class="card-text">
+                            <ul>
+                                <li>Amount : {{minTransaction.amount_usd | currency}}</li>
+                                <li>Blockchain : {{minTransaction.blockchain}}</li>
+                                <li>Date : {{minTransaction.timestamp*1000 | date:'short'}}</li>
+                            </ul>
+                        </div>
+                </div>
+                </mat-card-content>        
+            </mat-card>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-card>
+                <mat-card-title>Max Transaction</mat-card-title>
+                <mat-card-content>
+                    <img [src]="maxTransaction.pathImg" alt="" class="logo">
+                    <ul>
+                        <li>Amount : {{maxTransaction.amount_usd | currency}}</li>
+                        <li>Blockchain : {{maxTransaction.blockchain}}</li>
+                        <li>Date : {{maxTransaction.timestamp*1000 | date:'short'}}</li>
+                    </ul>
+                </mat-card-content>          
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <!--<mat-grid-list cols="2" rowHeight="2:1">
+        <mat-grid-tile>
+            <mat-card>
+                <mat-card-title>Chart</mat-card-title>
+                <mat-card-content>
+                    Try to put a chart
+                </mat-card-content>
+            </mat-card>
+        </mat-grid-tile>
+    
+        <mat-grid-tile>
+            <mat-card>
+                2
+            </mat-card>
+        </mat-grid-tile>
+    
+    
+    </mat-grid-list>-->
+    
+    <mat-grid-list cols="1" rowHeight="2:1">
+        <mat-grid-tile>
+            <mat-card style="overflow: scroll;">
+                <app-transaction></app-transaction>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

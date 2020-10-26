@@ -4,11 +4,27 @@
 
 }
 
-.dots{
+.bg {
+    z-index: -1;
+    background-position: left;
+}
+
+.hero {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-over {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-      
+    vertical-align: auto;
+    color: #fff;
+    display: inline-flex;
+    margin: 3rem auto auto 3rem;
+    
+}
+
+.crop {
+    max-width: 10%;
+    height: 300px;
+
 }

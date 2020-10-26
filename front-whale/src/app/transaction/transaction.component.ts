@@ -1,7 +1,7 @@
 import { RestService } from './../rest.service';
-import { ResponseTransactions, Wallet, WalletTransaction } from './../transaction';
+import { ResponseTransactions, Wallet, WalletTransaction, Transaction } from './../transaction';
 import { Component, OnInit } from '@angular/core';
-import { DataSource } from '@angular/cdk/table';
+
 
 
 @Component({
@@ -15,11 +15,16 @@ export class TransactionComponent implements OnInit {
   public uniqueAddress: Wallet[];
   public transactionByWallet: WalletTransaction[] = [];
   displayedColumns: string[] = ['blockchain', 'date', 'from', 'to', 'amount', 'usd'];
-  constructor(public rest: RestService) { }
 
+  public ListTransactions: Transaction[] = [];
+  public LT: Transaction[];
+  public total: number;
+  constructor(public rest: RestService) { }
+/*
   ngOnInit(): void {
     this.rest.getTransactions$().subscribe((res) => {
       this.resTransactions = res;
+      console.log(this.resTransactions);
       this.resTransactions.imgPathSetup();
       this.uniqueAddress = this.resTransactions.occurenceTransactions();
       if (this.uniqueAddress){
@@ -34,6 +39,18 @@ export class TransactionComponent implements OnInit {
       this.transactionByWallet.push(new WalletTransaction({wallet: w, transactions: this.resTransactions.allTransactionByWallet(w)}));
     });
   }
+  */
+  ngOnInit(): void {
+    this.rest.getLastTransaction$().subscribe((res) => {
+      res.forEach(element => {
+        this.ListTransactions.push(new Transaction(element));
+      });
+
+      this.LT = this.ListTransactions;
+      this.total = this.LT.length;
+    });
+  }
+
 
   // Stats (number of coins exchanged in total)
   //
