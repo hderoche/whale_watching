@@ -5,6 +5,7 @@ const app = require('./app');
 // Not using fork at the moment
 const fork = require('child_process').fork
 const whale = require('./logic/whaleApi');
+const stt = require('./logic/stats');
 
 const transactionRouter = require('./routes/transactions');
 
@@ -65,8 +66,7 @@ const normalizePort = val => {
 
 //Function to call the whale alert Api periodically
 //whale.cronFunc()
-
-
+//stt.update_stats();
 
 app.use('/api', transactionRouter);
 // Fonction pour save les json dans la base de données MongoDB

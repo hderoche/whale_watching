@@ -4,7 +4,7 @@ const ListA = require('../models/lists-addresses');
 const mongoose = require('mongoose');
 
 
-exports.update_stats = async () => {
+exports.create_stats = async () => {
     const stats = await Stats.findOne();
     console.log(stats)
     const transactions = await Transaction.find();
@@ -79,19 +79,41 @@ exports.update_stats = async () => {
     })
 };
 
-exports.update_stat = async (data) => {
+exports.update_stats = async (data) => {
     const stats = await Stats.findOne();
     
+    minTransaction = await Transaction.findOne({_id: stats.min});
+    maxTransaction = await Transaction.findOne({_id: stats.max});
+    
+    // Temporary comparison, so that the update is done once
 
+    maxTemp = {amount: data.transactions[0].amount_usd, Id: data.transactions[0]._id};
+    minTemp = {amount: data.transactions[0].amount_usd, Id: data.transactions[0]._id};
+    meanTemp = 0
     data.transactions.forEach(element => {
-        if(stats.min > element.ammout_usd){
-            min = element._id;
+        if(minTemp.amount_usd > element.ammout_usd){
+            minTemp.amount = element.amount_usd;
+            minTemp.Id = element._id;
+            
         }    
-        if(stats.max < element.ammout_usd){
-            max = element._id;
+        if(maxTemp < element.ammout_usd){
+            maxTemp = element.amount_usd;
+            maxTemp.Id = element._id;
         }    
         stats.correlation.push({timstamp: element.timestamp, t_id: element._id})
+        meanTemp = meanTemp + element.amount_usd;
     });
+
+    if(maxTemp.amount > maxTransaction.amount_usd){
+        stats.max = maxTemp.Id;
+    }
+    if(minTemp.amount > minTransaction.amount_usd){
+        stats.min = minTemp.Id;
+    }
+
+    stats.mean = (meanTemp + mean)/(data.transactions.length + 1)
+
+    // Updating the biggest Buyers and Sellers, but need to fetch all the Transactions and iterate through it.
 
     stats.save().then((doc) => {
         console.log('doc saved!');

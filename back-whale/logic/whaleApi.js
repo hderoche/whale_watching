@@ -4,6 +4,7 @@ const Transaction = require('../models/transaction');
 
 const cron = require('node-cron');
 const listA = require('./list-addresses');
+const stats = require('./stats');
 
 exports.cronFunc = () =>{
     var dataRequest ='';
@@ -33,7 +34,8 @@ exports.cronFunc = () =>{
 }
 convertToObject = (data) =>{
     if (data.count === 0) return;
-    listA.add_to_list(data);
+    listA.listAddresses(data);
+    stats.update_stats(data);
     data.transactions.forEach(
         (t) => {
         // for the Transaction object I decided to go with strings of strings
