@@ -12,7 +12,7 @@ export class TrackWalletComponent implements OnInit {
   public resTransactions: ResponseTransactions;
   public uniqueAddress: Wallet[];
   public transactionByWallet: WalletTransaction[] = [];
-  displayedColumns2: string[] = ['wallet', 'date', 'from', 'to'];
+  displayedColumns2: string[] = ['wallet', 'type'];
 
   constructor(private rest: RestService) { }
 
@@ -23,8 +23,8 @@ export class TrackWalletComponent implements OnInit {
       this.uniqueAddress = this.resTransactions.occurenceTransactions();
       if (this.uniqueAddress){
         this.treeTransaction(this.uniqueAddress);
-        console.log(this.transactionByWallet);
       }
+
     });
   }
 

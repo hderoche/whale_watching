@@ -1,13 +1,15 @@
 .my-transactions{
     
-    width:80%; 
+    width:90%; 
     display: block;
     margin: 0.5em auto;
 }
 
 .my-block{
     align-items: center;
-    
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    overflow: scroll;
 }
 .address{
     color: red;

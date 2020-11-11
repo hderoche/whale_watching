@@ -105,3 +105,4 @@ dist
 
 myApiKey.js
 requests.rest
+.DS_Store

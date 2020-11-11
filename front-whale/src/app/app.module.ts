@@ -20,6 +20,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { TrackWalletComponent } from './track-wallet/track-wallet.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
 import { FooterComponent } from './footer/footer.component';
+import { ChartsModule } from 'ng2-charts';
+import { DashComponent } from './dash/dash.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatMenuModule } from '@angular/material/menu';
+import { LayoutModule } from '@angular/cdk/layout';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +34,8 @@ import { FooterComponent } from './footer/footer.component';
     WalletComponent,
     TrackWalletComponent,
     HeroBannerComponent,
-    FooterComponent
+    FooterComponent,
+    DashComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +50,11 @@ import { FooterComponent } from './footer/footer.component';
     MatIconModule,
     MatExpansionModule,
     MatTabsModule,
+    MatGridListModule,
+    MatMenuModule,
+    ChartsModule,
+
+    LayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
