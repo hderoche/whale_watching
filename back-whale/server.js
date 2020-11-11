@@ -8,17 +8,30 @@ const transactionRouter = require('./routes/transactions');
 app.use(express.json);
 
 
-
+const uri = `mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb.net/<dbname>?retryWrites=true&w=majority`
 
 // MongoDB Atlas pwd : pQik6TGVZJkCGkFU
 // MongoDB Atlas usr : hderoche
-mongoose.connect(`mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb.net/<dbname>?retryWrites=true&w=majority`,  { useNewUrlParser: true, useUnifiedTopology: true } ).then(()=>{
+
+// API Key EtherScan : 1S3BH8CD2C7KRTA8AE2UENHW8AYFCG824P
+
+mongoose.connect(uri,  { useNewUrlParser: true, useUnifiedTopology: true } ).then(()=>{
     console.log('Successfully connected to MongoDB Atlas Whale')
 }).catch((error)=>{
     console.log('Unable to connect to the database');
     console.error(error);
 })
 
+/*
+const url = 'mongodb://127.0.0.1:27017/whale';
+const whale = `mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb.net/<dbname>?retryWrites=true&w=majority`;
+mongoose.connect(whale,  { useNewUrlParser: true, useUnifiedTopology: true } ).then(()=>{
+    console.log('Successfully connected to my DB')
+}).catch((error)=>{
+    console.log('Unable to connect to the database whale');
+    console.error(error);
+})
+*/
 
 
 const Transaction = require('./models/transaction');
@@ -111,4 +124,4 @@ app.use('/api', transactionRouter);
 // Fonction pour save les json dans la base de données MongoDB
 // Fonction pour traiter les données, whale_watching
 
-app.listen(3000);
+app.listen(3502);
