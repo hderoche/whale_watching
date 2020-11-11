@@ -23,18 +23,6 @@ mongoose.connect(uri,  { useNewUrlParser: true, useUnifiedTopology: true } ).the
     console.error(error);
 })
 
-<<<<<<< HEAD
-/*
-const url = 'mongodb://127.0.0.1:27017/whale';
-const whale = `mongodb+srv://hderoche:pQik6TGVZJkCGkFU@cluster0.f5hgc.mongodb.net/<dbname>?retryWrites=true&w=majority`;
-mongoose.connect(whale,  { useNewUrlParser: true, useUnifiedTopology: true } ).then(()=>{
-    console.log('Successfully connected to my DB')
-}).catch((error)=>{
-    console.log('Unable to connect to the database whale');
-    console.error(error);
-})
-*/
-=======
 const normalizePort = val => {
     const port = parseInt(val, 10);
   
@@ -46,7 +34,7 @@ const normalizePort = val => {
     }
     return false;
   };
-  const port = normalizePort(process.env.PORT || '4000');
+  const port = normalizePort(process.env.PORT || '3502');
   app.set('port', port);
   
   const errorHandler = error => {
@@ -82,15 +70,9 @@ const normalizePort = val => {
 //Function to call the whale alert Api periodically
 //whale.cronFunc()
 //stt.update_stats();
->>>>>>> ed5e134032c69c30a9b1b30c7b28c6c1b7bc5ea3
 
 app.use('/api', transactionRouter);
 // Fonction pour save les json dans la base de données MongoDB
 // Fonction pour traiter les données, whale_watching
 
-<<<<<<< HEAD
-app.listen(3502);
-=======
-
-server.listen(port);
->>>>>>> ed5e134032c69c30a9b1b30c7b28c6c1b7bc5ea3
+app.listen(port);
