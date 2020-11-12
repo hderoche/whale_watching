@@ -115,9 +115,46 @@ exports.update_stats = async (data) => {
 
     // Updating the biggest Buyers and Sellers, but need to fetch all the Transactions and iterate through it.
 
-    stats.save().then((doc) => {
+    stats.save().then(() => {
         console.log('doc saved!');
     }).catch(error => {
         console.log(error);
     });
+}
+
+exports.stats = async (data) => {
+    const stats = await Stats.findOne();
+    const transactionsMongoose = await Transaction.find();
+    let mean = 0
+    let max = transactionsMongoose[0].amount_usd
+    let min = transactionsMongoose[0].amount_usd
+    let maxId = transactionsMongoose[0].address.from
+    let minId = transactionsMongoose[0].address.from
+    transactionsMongoose.forEach(tx => {
+        iterate(tx, mean, max, min, maxId, minId)
+    })
+    if(data.count !== 0 ) {
+        data.transactions.forEach(tx => {
+            iterate(tx, mean, max, min, maxId, minId)
+        })
+    }
+    stats.mean = mean / transactionsMongoose.length;
+    stats.max = maxId;
+    stats.min = minId;
+
+    stats.save().then(() => {
+        console.log('doc saved');
+    }).catch((err) => console.error(err))
+}
+
+function iterate(tx, mean, max, min, maxId, minId) {
+    mean += tx.amount_usd
+    if(max < tx.amount_usd) {
+        max = tx.amount_usd
+        maxId = tx.address.from
+    }
+    if(min > tx.amount_usd){
+        min = tx.amount_usd
+        minId = tx.address.from
+    }
 }

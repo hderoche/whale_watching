@@ -35,7 +35,7 @@ exports.cronFunc = () =>{
 convertToObject = (data) =>{
     if (data.count === 0) return;
     listA.listAddresses(data);
-    stats.update_stats(data);
+    stats.stats(data);
     data.transactions.forEach(
         (t) => {
         // for the Transaction object I decided to go with strings of strings
