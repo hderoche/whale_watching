@@ -1,6 +1,6 @@
 # Whale_watching Project 
 
-Using the Whale_Alert API to track big transactions
+Using the Whale_Alert API to track big transactions (Work in Progress)
 
 
 |NodeJS|Angular|
