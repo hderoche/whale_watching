@@ -7,6 +7,10 @@ Using the Whale_Alert API to track big transactions (Work in Progress)
 |---|---|
 |Backend|Frontend|
 
+## Statistics
+
+The end goal is to analyse the whales on the crypto market and create/use my own metrics based on the data gathered uing the Whale_Alert API
+
 
 ## Front End | Angular
 
@@ -21,5 +25,4 @@ Everytime there is a new entry, it updates the stat file in the DB
 Using Node-cron, I am sending request every 7 seconds, to the Whale_Alert API to get the latest data from the API
 
 Maybe **webSocket** later for real time update
-
 
